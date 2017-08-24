@@ -2,7 +2,6 @@ import random
 
 class Routing:
 	def __init__(self, type='shuffle'):
-		print "Initialization"
 		self.type = type
 
 	#def decideInstance(self, message):

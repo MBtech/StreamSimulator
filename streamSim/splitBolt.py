@@ -9,11 +9,10 @@ class SplitBolt:
 		self.grouping = grouping
 		r = Routing(type=self.grouping)
                 self.routingMethod = r.getRoutingMethod()
-        	print "Do something"
 
 	def execute(self, message):
 		""" Execute function runs the user logic and the derived classes need to override this method"""
-		return message[1],random.choice(range(0, len(self.paraNext)))
+		return message[0],message[1],random.choice(range(0, len(self.paraNext)))
 
 	def run(self, messages):
 		nStages = len(self.paraNext)
@@ -22,12 +21,11 @@ class SplitBolt:
 			retmessages[i] = list()
                 for message in messages:
                         k = 0
-			print message[0]
                         self.processed[message[0]] +=1
-                        value,i = self.execute(message)
+                        key,value,i = self.execute(message[1])
 
-			k = self.routingMethod(value, self.paraNext[i])
-                        retmessages[i].append((k,value))
+			k = self.routingMethod(key, self.paraNext[i])
+                        retmessages[i].append((k,[key,value]))
 		return retmessages
 
 	def getProcessed(self):
